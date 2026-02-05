@@ -1,1 +1,1 @@
-2 EUR;;;;https://www.paypal.com/ncp/payment/JGK4KDBR9TRL4,5 EUR;;;;https://www.paypal.com/ncp/payment/AH4AEPAF2ZR7E,9 EUR;;;;https://www.paypal.com/ncp/payment/HMSULTPLLBAP8,15 EUR;;;;https://www.paypal.com/ncp/payment/67DLZ28K4A4F8
+20 EUR;;;;https://www.paypal.com/ncp/payment/JGK4KDBR9TRL4,50 EUR;;;;https://www.paypal.com/ncp/payment/AH4AEPAF2ZR7E,90 EUR;;;;https://www.paypal.com/ncp/payment/HMSULTPLLBAP8,150 EUR;;;;https://www.paypal.com/ncp/payment/67DLZ28K4A4F8
