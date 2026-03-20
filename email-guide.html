@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMTP Setup Guide — Gmail, Outlook & Yahoo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0e12;
+    --surface: #14151a;
+    --surface2: #1c1d24;
+    --border: rgba(255,255,255,0.07);
+    --text: #e8e9f0;
+    --muted: #7a7d8e;
+    --gmail: #ea4335;
+    --gmail-light: #fce8e6;
+    --outlook: #0078d4;
+    --outlook-light: #e3f2fd;
+    --yahoo: #6001d2;
+    --yahoo-light: #ede7f6;
+    --accent: #f0c040;
+    --green: #34d399;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    text-align: center;
+    padding: 30px 20px 5px;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(240,192,64,.13) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid rgba(240,192,64,.3);
+    border-radius: 100px;
+    padding: 5px 14px;
+    margin-bottom: 22px;
+    animation: fadeUp .6s ease both;
+  }
+  h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.4rem, 6vw, 4.2rem);
+    line-height: 1.12;
+    max-width: 780px;
+    margin: 0 auto 18px;
+    animation: fadeUp .6s .1s ease both;
+  }
+  h1 em { font-style: italic; color: var(--accent); }
+  .hero-sub {
+    color: var(--muted);
+    max-width: 520px;
+    margin: 0 auto 42px;
+    font-size: 16px;
+    animation: fadeUp .6s .2s ease both;
+  }
+
+  /* ── TABS ── */
+  .tabs-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    animation: fadeUp .6s .3s ease both;
+  }
+  .tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .25s;
+  }
+  .tab-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+  .tab-btn:hover { color: var(--text); border-color: rgba(255,255,255,.18); }
+  .tab-btn.active-gmail  { background: rgba(234,67,53,.12); border-color: var(--gmail);  color: #f08080; }
+  .tab-btn.active-outlook{ background: rgba(0,120,212,.12); border-color: var(--outlook);color: #6ab8f7; }
+  .tab-btn.active-yahoo  { background: rgba(96,1,210,.14);  border-color: var(--yahoo);  color: #c084fc; }
+
+  /* ── CONTENT ── */
+  .content {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 20px 20px 100px;
+  }
+  .provider-section { display: none; }
+  .provider-section.active { display: block; animation: fadeUp .4s ease both; }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 30px 28px;
+    border-radius: 16px 16px 0 0;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    margin-top: 32px;
+  }
+  .section-header.gmail-hdr  { background: linear-gradient(135deg, rgba(234,67,53,.15), rgba(234,67,53,.04)); }
+  .section-header.outlook-hdr{ background: linear-gradient(135deg, rgba(0,120,212,.15), rgba(0,120,212,.04)); }
+  .section-header.yahoo-hdr  { background: linear-gradient(135deg, rgba(96,1,210,.15), rgba(96,1,210,.04)); }
+  .logo-circle {
+    width: 46px; height: 46px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .logo-circle svg { width: 26px; height: 26px; }
+  .gmail-circle  { background: rgba(234,67,53,.2); }
+  .outlook-circle{ background: rgba(0,120,212,.2); }
+  .yahoo-circle  { background: rgba(96,1,210,.2); }
+  .section-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.55rem;
+  }
+  .section-header p { color: var(--muted); font-size: 13.5px; margin-top: 2px; }
+
+  /* ── STEPS CARD ── */
+  .steps-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0 0 16px 16px;
+    overflow: hidden;
+  }
+  .step {
+    display: grid;
+    grid-template-columns: 52px 1fr;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    transition: background .2s;
+  }
+  .step:last-child { border-bottom: none; }
+  .step:hover { background: var(--surface2); }
+  .step-num {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 22px 0 0;
+  }
+  .num-badge {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+  .gmail-num  { background: rgba(234,67,53,.15); color: #f08080; border: 1px solid rgba(234,67,53,.3); }
+  .outlook-num{ background: rgba(0,120,212,.15); color: #6ab8f7; border: 1px solid rgba(0,120,212,.3); }
+  .yahoo-num  { background: rgba(96,1,210,.15);  color: #c084fc; border: 1px solid rgba(96,1,210,.3); }
+  .step-body {
+    padding: 20px 24px 20px 8px;
+  }
+  .step-body strong {
+    display: block;
+    font-weight: 600;
+    font-size: 14.5px;
+    margin-bottom: 5px;
+    color: var(--text);
+  }
+  .step-body p { color: var(--muted); font-size: 13.5px; }
+  .step-body a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(240,192,64,.4);
+    transition: border-color .2s;
+  }
+  .step-body a:hover { border-color: var(--accent); }
+
+  /* ── CODE BOX ── */
+  .code-box {
+    margin-top: 10px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.8;
+    color: #c9cdd8;
+    position: relative;
+  }
+  .code-box .label {
+    font-size: 10px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+    display: block;
+  }
+  .code-row { display: flex; gap: 12px; }
+  .code-key { color: var(--muted); min-width: 100px; }
+  .code-val { color: var(--green); }
+
+  /* ── NOTE BOX ── */
+  .note {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-top: 10px;
+    padding: 12px 14px;
+    border-radius: 9px;
+    background: rgba(240,192,64,.07);
+    border: 1px solid rgba(240,192,64,.18);
+    font-size: 13px;
+    color: #d4b96a;
+  }
+  .note svg { flex-shrink: 0; width: 16px; height: 16px; margin-top: 2px; }
+
+  /* ── COMPARE TABLE ── */
+  .compare-section { margin-top: 60px; }
+  .compare-section h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.5rem;
+    margin-bottom: 6px;
+  }
+  .compare-section > p { color: var(--muted); margin-bottom: 24px; font-size: 13.5px; }
+  .table-wrap { overflow-x: auto; border-radius: 14px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; }
+  thead tr { background: var(--surface2); }
+  th {
+    padding: 13px 18px;
+    text-align: left;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 13px 18px;
+    font-size: 13.5px;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface2); }
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+  }
+  .b-ssl   { background: rgba(52,211,153,.12); color: #34d399; border: 1px solid rgba(52,211,153,.25); }
+  .b-tls   { background: rgba(96,165,250,.12);  color: #60a5fa; border: 1px solid rgba(96,165,250,.25); }
+  .b-587   { background: rgba(240,192,64,.1);  color: var(--accent); border: 1px solid rgba(240,192,64,.25); }
+  .b-465   { background: rgba(251,146,60,.1);  color: #fb923c; border: 1px solid rgba(251,146,60,.25); }
+  .g { color: #f08080; }
+  .o { color: #6ab8f7; }
+  .y { color: #c084fc; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    .step { grid-template-columns: 42px 1fr; }
+    .step-body { padding: 16px 16px 16px 6px; }
+    td, th { padding: 10px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-tag">📧 Email Setup Guide</div>
+  <h1>Configure <br><em>your own email</em><br> for eTestim</h1>
+  <p class="hero-sub">Step-by-step instructions to enable SMTP for sending emails with Gmail, Outlook, and Yahoo.</p>
+  <div class="tabs-wrapper">
+    <button class="tab-btn active-gmail" onclick="switchTab('gmail', this)">
+      <!-- Gmail icon -->
+      <svg viewBox="0 0 24 24" fill="none"><path d="M2 6.5A2.5 2.5 0 014.5 4h15A2.5 2.5 0 0122 6.5v11a2.5 2.5 0 01-2.5 2.5h-15A2.5 2.5 0 012 17.5v-11z" fill="rgba(234,67,53,.2)" stroke="#ea4335" stroke-width="1.5"/><path d="M2 7l10 7 10-7" stroke="#ea4335" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Gmail
+    </button>
+    <button class="tab-btn" onclick="switchTab('outlook', this)">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="2.5" fill="rgba(0,120,212,.2)" stroke="#0078d4" stroke-width="1.5"/><path d="M2 8h20M8 8v12" stroke="#0078d4" stroke-width="1.5"/></svg>
+      Outlook
+    </button>
+    <button class="tab-btn" onclick="switchTab('yahoo', this)">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M3 5l5.5 9L3 19h3l3.5-4.5L13 19h3l-5.5-9L14 5h-3l-2.5 3.5L6 5H3z" fill="rgba(96,1,210,.25)" stroke="#6001d2" stroke-width="1"/><circle cx="17.5" cy="17" r="2.5" fill="rgba(96,1,210,.25)" stroke="#6001d2" stroke-width="1.5"/></svg>
+      Yahoo
+    </button>
+  </div>
+</header>
+
+<main class="content">
+
+  <!-- ═══════════ GMAIL ═══════════ -->
+  <section class="provider-section active" id="gmail">
+
+    <div class="section-header gmail-hdr">
+      <div class="logo-circle gmail-circle">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M2 6.5A2.5 2.5 0 014.5 4h15A2.5 2.5 0 0122 6.5v11a2.5 2.5 0 01-2.5 2.5h-15A2.5 2.5 0 012 17.5v-11z" fill="rgba(234,67,53,.15)" stroke="#ea4335" stroke-width="1.5"/><path d="M2 7l10 7 10-7" stroke="#ea4335" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </div>
+      <div>
+        <h2>Gmail SMTP Setup</h2>
+        <p>Use an App Password — required when 2-Step Verification is enabled</p>
+      </div>
+    </div>
+
+    <div class="steps-card">
+
+      <div class="step">
+        <div class="step-num"><span class="num-badge gmail-num">1</span></div>
+        <div class="step-body">
+          <strong>Enable 2-Step Verification</strong>
+          <p>SMTP App Passwords require 2FA. Go to <a href="https://myaccount.google.com/security" target="_blank" rel="noopener">myaccount.google.com/security</a> and turn on <em>2-Step Verification</em> under "How you sign in to Google".</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num"><span class="num-badge gmail-num">2</span></div>
+        <div class="step-body">
+          <strong>Generate an App Password</strong>
+          <p>Visit <a href="https://myaccount.google.com/apppasswords" target="_blank" rel="noopener">myaccount.google.com/apppasswords</a>. Choose app: <em>Mail</em>, device: <em>Other</em> (name it "eTestim APP"). Click <strong>Generate</strong> and copy the 16-character password shown.</p>
+          <div class="note">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 3a.75.75 0 110 1.5A.75.75 0 018 4zm-.25 3h1.5v4.5h-1.5V7z"/></svg>
+            Copy-paste this password immediately at eTestim - Google will not show it again. Paste the generated password to the password field of email setup at eTestim. The password is saved only on your computer encrypted and is not shared with us. Keep the 16-char generated code secure as it gives access to your account. If you close the shown password without using it at eTestim, you can delete it and generate another.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num"><span class="num-badge gmail-num">3</span></div>
+        <div class="step-body">
+          <strong>Use These Settings</strong>
+          <div class="code-box">
+            <span class="label">Under GMail - add these values in eTestim</span>
+            <div class="code-row"><span class="code-key">Name Surname</span><span class="code-val">Your name/surname as it appears on your gmail account</span></div>       
+            <div class="code-row"><span class="code-key">Email</span><span class="code-val">your@gmail.com</span></div>
+            <div class="code-row"><span class="code-key">Password</span><span class="code-val">16-char App Password generated(copy the 16-char password that gets shown on screen by selecting it and copying it as it is shown)</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════ OUTLOOK ═══════════ -->
+  <section class="provider-section" id="outlook">
+
+    <div class="section-header outlook-hdr">
+      <div class="logo-circle outlook-circle">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="4" width="20" height="16" rx="2.5" fill="rgba(0,120,212,.15)" stroke="#0078d4" stroke-width="1.5"/><path d="M2 8h20M8 8v12" stroke="#0078d4" stroke-width="1.5"/></svg>
+      </div>
+      <div>
+        <h2>Outlook / Hotmail SMTP</h2>
+        <p>Works for @outlook.com, @hotmail.com, and @live.com addresses</p>
+      </div>
+    </div>
+
+    <div class="steps-card">
+
+      <div class="step">
+        <div class="step-num"><span class="num-badge outlook-num">1</span></div>
+        <div class="step-body">
+          <strong>Sign in to Outlook Settings</strong>
+          <p>Go to <a href="https://outlook.live.com/mail/0/options/mail/accounts/popImap" target="_blank" rel="noopener">Outlook POP & IMAP Settings</a> or navigate to <strong>Settings → Mail → Sync email</strong> from your Outlook inbox.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num"><span class="num-badge outlook-num">2</span></div>
+        <div class="step-body">
+          <strong>Enable SMTP Authentication</strong>
+          <p>In <em>Sync email</em>, scroll to "POP and IMAP" and ensure <strong>SMTP AUTH</strong> is enabled. This allows external clients to send mail on your behalf.</p>
+          <div class="note">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 3a.75.75 0 110 1.5A.75.75 0 018 4zm-.25 3h1.5v4.5h-1.5V7z"/></svg>
+            Microsoft 365 / work accounts may need an admin to enable SMTP AUTH via the Exchange Admin Center.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num"><span class="num-badge outlook-num">3</span></div>
+        <div class="step-body">
+          <strong>Set Up App Password (if MFA is on)</strong>
+          <p>If your account uses Multi-Factor Authentication, visit <a href="https://account.microsoft.com/security" target="_blank" rel="noopener">account.microsoft.com/security</a> → <em>Advanced security options</em> → <strong>App passwords</strong>. Create one for your SMTP client.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num"><span class="num-badge outlook-num">4</span></div>
+        <div class="step-body">
+          <strong>Use These SMTP Settings</strong>
+          <div class="code-box">
+            <span class="label">SMTP Configuration</span>
+            <div class="code-row"><span class="code-key">Server</span><span class="code-val">smtp.office365.com</span></div>
+            <div class="code-row"><span class="code-key">Port</span><span class="code-val">587</span></div>
+            <div class="code-row"><span class="code-key">Encryption</span><span class="code-val">STARTTLS</span></div>
+            <div class="code-row"><span class="code-key">Username</span><span class="code-val">your@outlook.com</span></div>
+            <div class="code-row"><span class="code-key">Password</span><span class="code-val">Account or App Password</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num"><span class="num-badge outlook-num">5</span></div>
+        <div class="step-body">
+          <strong>Alternative: Hotmail SMTP server</strong>
+          <p>If you're using @hotmail.com, you may also try <strong>smtp-mail.outlook.com</strong> on port <strong>587</strong> with STARTTLS. Both point to the same infrastructure.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num"><span class="num-badge outlook-num">6</span></div>
+        <div class="step-body">
+          <strong>Verify & Test</strong>
+          <p>Configure your app with the credentials above and send a test email. If blocked, check <a href="https://admin.microsoft.com" target="_blank" rel="noopener">Microsoft 365 Admin Center</a> for security policies, or check if "Modern Authentication" is conflicting with basic auth.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════ YAHOO ═══════════ -->
+  <section class="provider-section" id="yahoo">
+
+    <div class="section-header yahoo-hdr">
+      <div class="logo-circle yahoo-circle">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 5l5.5 9L3 19h3l3.5-4.5L13 19h3l-5.5-9L14 5h-3l-2.5 3.5L6 5H3z" fill="rgba(96,1,210,.25)" stroke="#7c3aed" stroke-width="1"/><circle cx="17.5" cy="17" r="2.5" fill="rgba(96,1,210,.25)" stroke="#7c3aed" stroke-width="1.5"/></svg>
+      </div>
+      <div>
+        <h2>Yahoo Mail SMTP Setup</h2>
+        <p>Requires generating an App Password through Yahoo Account Security</p>
+      </div>
+    </div>
+
+    <div class="steps-card">
+
+      <div class="step">
+        <div class="step-num"><span class="num-badge yahoo-num">1</span></div>
+        <div class="step-body">
+          <strong>Access Yahoo Account Security</strong>
+          <p>Visit <a href="https://login.yahoo.com/account/security" target="_blank" rel="noopener">Yahoo Account Security</a> and log into your account. This is where you manage 2FA and app passwords.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num"><span class="num-badge yahoo-num">2</span></div>
+        <div class="step-body">
+          <strong>Enable Two-Step Verification</strong>
+          <p>Under the <em>Two-step verification</em> section, toggle it <strong>On</strong> and follow the setup steps. This is required before App Passwords become available.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num"><span class="num-badge yahoo-num">3</span></div>
+        <div class="step-body">
+          <strong>Generate an App Password</strong>
+          <p>Scroll to <em>Generate app password</em> on the same page <a href="https://login.yahoo.com/account/security#other-apps" target="_blank" rel="noopener">(direct link)</a>. Enter a name (e.g., "SMTP Client"), click <strong>Generate password</strong>, and copy the result.</p>
+          <div class="note">
+            <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 3a.75.75 0 110 1.5A.75.75 0 018 4zm-.25 3h1.5v4.5h-1.5V7z"/></svg>
+            Yahoo shows this password only once. Store it somewhere safe before closing the dialog.
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num"><span class="num-badge yahoo-num">4</span></div>
+        <div class="step-body">
+          <strong>Allow SMTP Access</strong>
+          <p>In your Yahoo inbox, go to <strong>Settings → More Settings → Mailboxes</strong>. Make sure <em>IMAP/SMTP</em> access is enabled under <a href="https://mail.yahoo.com/d/settings/5" target="_blank" rel="noopener">Yahoo Mail Settings</a>.</p>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num"><span class="num-badge yahoo-num">5</span></div>
+        <div class="step-body">
+          <strong>Use These SMTP Settings</strong>
+          <div class="code-box">
+            <span class="label">SMTP Configuration</span>
+            <div class="code-row"><span class="code-key">Server</span><span class="code-val">smtp.mail.yahoo.com</span></div>
+            <div class="code-row"><span class="code-key">Port (TLS)</span><span class="code-val">587</span></div>
+            <div class="code-row"><span class="code-key">Port (SSL)</span><span class="code-val">465</span></div>
+            <div class="code-row"><span class="code-key">Encryption</span><span class="code-val">STARTTLS or SSL/TLS</span></div>
+            <div class="code-row"><span class="code-key">Username</span><span class="code-val">your@yahoo.com</span></div>
+            <div class="code-row"><span class="code-key">Password</span><span class="code-val">Generated App Password</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num"><span class="num-badge yahoo-num">6</span></div>
+        <div class="step-body">
+          <strong>Test Your Setup</strong>
+          <p>Plug in the settings above to your email client or app and send a test message. If authentication fails, regenerate a new app password. Yahoo also has a <a href="https://help.yahoo.com/kb/SLN4724.html" target="_blank" rel="noopener">troubleshooting guide</a> for SMTP issues.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════ COMPARE TABLE ═══════════ -->
+  <section class="compare-section">
+    <h3>Quick Reference — All Providers</h3>
+    <p>Copy these settings directly into your email client or application.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Provider</th>
+            <th>SMTP Server</th>
+            <th>Port</th>
+            <th>Encryption</th>
+            <th>Auth Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="g">Gmail</td>
+            <td><span style="font-family:'DM Mono',monospace;font-size:13px">smtp.gmail.com</span></td>
+            <td><span class="badge b-587">587</span> <span class="badge b-465">465</span></td>
+            <td><span class="badge b-tls">STARTTLS</span> <span class="badge b-ssl">SSL</span></td>
+            <td>App Password</td>
+          </tr>
+          <tr>
+            <td class="o">Outlook</td>
+            <td><span style="font-family:'DM Mono',monospace;font-size:13px">smtp.office365.com</span></td>
+            <td><span class="badge b-587">587</span></td>
+            <td><span class="badge b-tls">STARTTLS</span></td>
+            <td>Password / App PW</td>
+          </tr>
+          <tr>
+            <td class="y">Yahoo</td>
+            <td><span style="font-family:'DM Mono',monospace;font-size:13px">smtp.mail.yahoo.com</span></td>
+            <td><span class="badge b-587">587</span> <span class="badge b-465">465</span></td>
+            <td><span class="badge b-tls">STARTTLS</span> <span class="badge b-ssl">SSL</span></td>
+            <td>App Password</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  All links point to official provider documentation. Changes made by providers may not be reflected here in real time.
+</footer>
+
+<script>
+  function switchTab(provider, btn) {
+    // hide all sections
+    document.querySelectorAll('.provider-section').forEach(s => s.classList.remove('active'));
+    // deactivate all buttons
+    document.querySelectorAll('.tab-btn').forEach(b => {
+      b.className = 'tab-btn';
+    });
+    // activate selected
+    document.getElementById(provider).classList.add('active');
+    btn.classList.add('active-' + provider);
+  }
+</script>
+</body>
+</html>
