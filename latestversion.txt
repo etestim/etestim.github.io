@@ -1,1 +1,1 @@
-v1.5;;;https://etestim.pages.dev/latestVersion
+v1.6;;;https://etestim.pages.dev/latestVersion
