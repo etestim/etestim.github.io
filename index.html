@@ -74,9 +74,19 @@ async function redirectFromParts(parts) {
 
 
 async function autoRedirect() {
-    let code = window.location.pathname.substring(1);
-    if (!code) return;
-    const parts = code.split("-");
+    let path = window.location.pathname;
+
+    if (path.startsWith("/")) {
+        path = path.substring(1);
+    }
+
+    if (path.startsWith("index.html/")) {
+        path = path.replace("index.html/", "");
+    }
+
+    if (!path) return;
+
+    const parts = path.split("-").map(p => p.trim());
     redirectFromParts(parts);
 }
 
