@@ -58,7 +58,7 @@ async function loadWords() {
 async function decodeParts(parts) {
     const words = await loadWords();
     return parts.map(part => {
-        const idx = parseInt(part, 10); 
+        const idx = parseInt(part, 36); 
         if (isNaN(idx) || idx < 0 || idx >= words.length) return part;
         return words[idx];
     });
