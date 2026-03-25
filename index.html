@@ -48,7 +48,7 @@ let cachedWords = null;
 
 async function loadWords() {
     if (cachedWords) return cachedWords;
-    const response = await fetch("words.txt");
+    const response = await fetch("wordsten.txt");
     const text = await response.text();
     cachedWords = text.split("\n").map(w => w.trim());
     return cachedWords;
