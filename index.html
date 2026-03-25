@@ -42,5 +42,67 @@
     <div class="container">
         <img src="./logo.png" alt="Image">
     </div>
+	
+<script>
+let cachedWords = null;
+
+async function loadWords() {
+    if (cachedWords) return cachedWords;
+    const response = await fetch("words.txt");
+    const text = await response.text();
+    cachedWords = text.split("\n").map(w => w.trim());
+    return cachedWords;
+}
+
+
+async function decodeParts(parts) {
+    const words = await loadWords();
+    return parts.map(part => {
+        const idx = parseInt(part, 10); 
+        if (isNaN(idx) || idx < 0 || idx >= words.length) return part;
+        return words[idx];
+    });
+}
+
+
+async function redirectFromParts(parts) {
+    const decoded = await decodeParts(parts);
+    const subdomain = decoded.join("-");
+    const finalUrl = "https://" + subdomain + ".trycloudflare.com";
+    window.location.href = finalUrl;
+}
+
+
+async function autoRedirect() {
+    let code = window.location.pathname.substring(1);
+    if (!code) return;
+    const parts = code.split("-");
+    redirectFromParts(parts);
+}
+
+
+async function manualRedirect() {
+    const parts = [
+        document.getElementById("part1").value.trim(),
+        document.getElementById("part2").value.trim(),
+        document.getElementById("part3").value.trim(),
+        document.getElementById("part4").value.trim()
+    ].filter(p => p !== "");
+
+    if (parts.length === 0) return;
+    redirectFromParts(parts);
+}
+
+
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Enter") manualRedirect();
+});
+
+
+autoRedirect();
+</script>	
+	
 </body>
+
+
 </html>
