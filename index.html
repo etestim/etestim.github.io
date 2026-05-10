@@ -79,6 +79,11 @@ async function autoRedirect() {
     if (path.startsWith("/")) {
         path = path.substring(1);
     }
+	
+	  // DO NOT redirect direct .html requests
+    if (path.endsWith(".html")) {
+        return;
+    }
 
     if (path.startsWith("index.html/")) {
         path = path.replace("index.html/", "");
