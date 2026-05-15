@@ -1,0 +1,12 @@
+{
+  "version": "2.4.0",
+  "date": "May 16, 2026",
+  "download": "downloads/eTestim-update.exe",
+  "changes": [
+    "Improved exam loading performance",
+    "Added Italian translation fixes",
+    "Improved student result export",
+    "Fixed login/session issues",
+    "Minor UI improvements"
+  ]
+}
