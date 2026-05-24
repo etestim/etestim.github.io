@@ -1,1 +1,1 @@
-v1.6;;;https://etestim.pages.dev/download.html
+v1.0;;;https://etestim.pages.dev/download.html
