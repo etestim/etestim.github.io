@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thank You — eTestim</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Mulish:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="styles.css" rel="stylesheet">
+</head>
+
+<body>
+
+<section class="hero" style="min-height: 80vh; display:flex; align-items:center; justify-content:center; padding-top:60px">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-content" style="text-align:center; max-width:700px;">
+    
+    <div class="hero-badge">🎉 Purchase Successful</div>
+
+    <h1>Thank you for your purchase!</h1>
+
+    <p class="hero-sub" style="margin-top:1rem;">
+      Until we make the necessary verifications, <strong><span style="color: white; font-weight=800;">the application will have a dummy expiry date of 10 days</strong></span>. It will change automatically once the verifications end which may last up to 2 days.
+    </p>
+
+    <p class="hero-sub" style="margin-top:0.5rem;">
+      You can now return to the application and continue with the next steps.
+    </p>
+
+  </div>
+</section>
+
+
+<footer>
+  <a class="brand" href="index.html" style="font-size:1.1rem; text-decoration: none">e<span>Testim</span></a>
+  <p>© <span id="year"></span> eTestim. All rights reserved.</p>
+  <div style="display:flex;gap:1.5rem;">
+    <a href="./privacy.html">Privacy</a>
+    <a href="./contact.html">Contact</a>
+  </div>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+
+<script>
+const hamburger = document.getElementById('hamburger');
+const menu = document.getElementById('nav-menu');
+hamburger.addEventListener('click', () => menu.classList.toggle('open'));
+</script>
+
+</body>
+</html>
