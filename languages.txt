@@ -1,4 +1,4 @@
-al=2:Shqip
+al=1:Shqip
 en=1:English
 es=1:Español
 fr=1:Français
