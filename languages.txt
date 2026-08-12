@@ -1,0 +1,5 @@
+al=1:Shqip
+en=1:English
+es=1:Español
+fr=1:Français
+it=1:Italiano
